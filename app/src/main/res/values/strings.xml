@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">RecyclerView</string>
+    <string name="título">Capitales del mundo</string>
+    <string name="Boton">Cerrar</string>
+    <string name="checkbox">Favorita</string>
+    <string name="tvHab">1000000</string>
+    <string name="tvCap">Capital</string>
+    <string name="no_hay_tareas_disponibles">No hay tareas disponibles</string>
+    <string name="acerca_de">Acerca De ...</string>
+    <string name="salir">Salir</string>
+    <string name="item">Item</string>
+    <string name="favorita">Favorita</string>
+    <string name="creartarea">CrearTarea</string>
+</resources>
