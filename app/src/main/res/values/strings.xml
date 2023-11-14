@@ -11,4 +11,12 @@
     <string name="item">Item</string>
     <string name="favorita">Favorita</string>
     <string name="creartarea">CrearTarea</string>
+
+    <string-array name="progreso_options">
+        <item>No iniciada</item>
+        <item>Iniciada</item>
+        <item>Avanzada</item>
+        <item>Casi finalizada</item>
+        <item>Finalizada</item>
+    </string-array>
 </resources>

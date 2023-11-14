@@ -11,6 +11,8 @@ public class Tarea {
     private Date fechaObjetivo;
     private boolean prioritaria;
 
+    public Tarea(){}
+
     public Tarea(String titulo, String descripcion, int progreso, Date fechaCreacion, Date fechaObjetivo, boolean prioritaria) {
         this.titulo = titulo;
         this.descripcion = descripcion;

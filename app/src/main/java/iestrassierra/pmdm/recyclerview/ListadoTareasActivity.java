@@ -1,5 +1,6 @@
 package iestrassierra.pmdm.recyclerview;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -87,6 +88,11 @@ public class ListadoTareasActivity extends AppCompatActivity {
 
             filtrarFavorita();
 
+            case R.id.menuItemAnadirTareas:
+
+                Intent intent = new Intent(this, CrearTareaActivity.class);
+                startActivity(intent);
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);

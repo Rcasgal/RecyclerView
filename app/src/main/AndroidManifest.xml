@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="iestrassierra.pmdm.recyclerview">
 
@@ -10,8 +9,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RecyclerView">
 
+        <activity android:name=".CrearTareaActivity"
+            android:exported="true" />
         <activity
-            android:name=".MainActivity">
+            android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -19,9 +21,9 @@
         </activity>
 
         <activity
-            android:name=".ListadoTareasActivity">
+            android:name=".ListadoTareasActivity"
+            android:exported="true">
         </activity>
-
 
     </application>
 

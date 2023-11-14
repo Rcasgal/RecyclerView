@@ -1,0 +1,72 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/editTextDescripcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Descripción"
+        android:inputType="textMultiLine"
+        android:minLines="4" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:maxHeight="300dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewTitulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Título" />
+
+            <TextView
+                android:id="@+id/textViewFechaCreacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fecha de Creación" />
+
+            <TextView
+                android:id="@+id/textViewFechaObjetivo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fecha Objetivo" />
+
+            <CheckBox
+                android:id="@+id/checkBoxPrioritaria"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Prioritaria" />
+
+            <Spinner
+                android:id="@+id/spinnerProgreso"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/progreso_options" />
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/btnGuardar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Guardar" />
+    </LinearLayout>
+
+</LinearLayout>
