@@ -14,7 +14,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.Calendar;
 
 
-public class CrearTareaActivity extends AppCompatActivity implements PrimerFragment.OnSiguienteClickListener {
+public class CrearTareaActivity extends AppCompatActivity implements PrimerFragment.OnSiguienteClickListener,SegundoFragment.OnSiguienteClickListener{
 
     private FragmentManager fragmentManager;
     private TareaViewModel tareaViewModel;
@@ -31,9 +31,15 @@ public class CrearTareaActivity extends AppCompatActivity implements PrimerFragm
     }
 
     private void cargarPrimerFragment() {
+
+        tareaViewModel.setTitulo("");
+        tareaViewModel.setFechaCreacion("");
+        tareaViewModel.setFechaObjetivo("");
+        tareaViewModel.setPrioritaria(false);
+        tareaViewModel.setProgreso(0);
+
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         PrimerFragment primerFragment = new PrimerFragment();
-        primerFragment.setOnSiguienteClickListener(this);
         fragmentTransaction.replace(R.id.frameLayoutContainer, primerFragment);
         fragmentTransaction.commit();
     }
@@ -50,22 +56,26 @@ public class CrearTareaActivity extends AppCompatActivity implements PrimerFragm
         SegundoFragment segundoFragment = new SegundoFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frameLayoutContainer, segundoFragment);
-        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
     @Override
-    public void showDatePickerDialog(TextInputEditText editText) {
+    public void onSiguienteClick(String titulo, String fechaCreacion, String fechaObjetivo, boolean prioritaria,int progreso,String descripcion) {
 
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        tareaViewModel.setTitulo(titulo);
+        tareaViewModel.setFechaCreacion(fechaCreacion);
+        tareaViewModel.setFechaObjetivo(fechaObjetivo);
+        tareaViewModel.setPrioritaria(prioritaria);
+        tareaViewModel.setProgreso(progreso);
+        tareaViewModel.setDescripcion(descripcion);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, year1, monthOfYear, dayOfMonth) -> {
-            editText.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1);
-        }, year, month, day);
-
-        datePickerDialog.show();
+        PrimerFragment primerFragment = new PrimerFragment();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayoutContainer, primerFragment);
+        fragmentTransaction.commit();
     }
+
+
+
+
 }

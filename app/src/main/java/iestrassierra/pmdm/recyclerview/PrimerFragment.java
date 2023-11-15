@@ -1,5 +1,6 @@
 package iestrassierra.pmdm.recyclerview;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,13 +10,12 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
-
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import com.google.android.material.textfield.TextInputEditText;
-
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+
+import java.util.Calendar;
+
 public class PrimerFragment extends Fragment {
 
     private EditText editTextTitulo, editTextFechaCreacion, editTextFechaObjetivo;
@@ -24,25 +24,44 @@ public class PrimerFragment extends Fragment {
     private CheckBox checkBoxPrioritaria;
     private Button btnSiguiente;
 
+    private TareaViewModel tareaViewModel;
+
+    public PrimerFragment() {
+    }
+
     public interface OnSiguienteClickListener {
         void onSiguienteClick(String titulo, String fechaCreacion, String fechaObjetivo, boolean prioritaria,int progreso);
-        void showDatePickerDialog(TextInputEditText editText);
     }
 
     private OnSiguienteClickListener listener;
     public void setOnSiguienteClickListener(OnSiguienteClickListener listener) {
         this.listener = listener;
     }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //Se resuelven las comunicaciones
+
+        tareaViewModel = new ViewModelProvider(requireActivity()).get(TareaViewModel.class);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_primer, container, false);
+        View fragmento1 = inflater.inflate(R.layout.fragment_primer, container, false);
 
-        editTextTitulo = view.findViewById(R.id.editTextTitulo);
-        editTextFechaCreacion = view.findViewById(R.id.editTextFechaCreacion);
-        editTextFechaObjetivo = view.findViewById(R.id.editTextFechaObjetivo);
-        checkBoxPrioritaria = view.findViewById(R.id.checkBoxPrioritaria);
-        spProgreso = view.findViewById(R.id.spinnerProgreso);
-        btnSiguiente = view.findViewById(R.id.btnSiguiente);
+        editTextTitulo = fragmento1.findViewById(R.id.editTextTitulo);
+        editTextFechaCreacion = fragmento1.findViewById(R.id.editTextFechaCreacion);
+        editTextFechaObjetivo = fragmento1.findViewById(R.id.editTextFechaObjetivo);
+        checkBoxPrioritaria = fragmento1.findViewById(R.id.checkBoxPrioritaria);
+        spProgreso = fragmento1.findViewById(R.id.spinnerProgreso);
+        btnSiguiente = fragmento1.findViewById(R.id.btnSiguiente);
+
+        editTextTitulo.setText(tareaViewModel.getTitulo().getValue());
+        editTextFechaCreacion.setText(tareaViewModel.getFechaCreacion().getValue());
+        editTextFechaObjetivo.setText(tareaViewModel.getFechaObjetivo().getValue());
+        checkBoxPrioritaria.setChecked(Boolean.TRUE.equals(tareaViewModel.getPrioritaria().getValue()));
+        spProgreso.setSelection(tareaViewModel.getProgreso().getValue());
 
         btnSiguiente.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,26 +80,43 @@ public class PrimerFragment extends Fragment {
             }
         });
 
-
         editTextFechaCreacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listener != null) {
-                    listener.showDatePickerDialog((TextInputEditText) editTextFechaCreacion);
-                }
+
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (view, year1, monthOfYear, dayOfMonth) -> {
+                    editTextFechaCreacion.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1);
+                }, year, month, day);
+
+                datePickerDialog.show();
+
             }
         });
 
         editTextFechaObjetivo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listener != null) {
-                    listener.showDatePickerDialog((TextInputEditText) editTextFechaObjetivo);
-                }
+
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (view, year1, monthOfYear, dayOfMonth) -> {
+                    editTextFechaObjetivo.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1);
+                }, year, month, day);
+
+                datePickerDialog.show();
+
             }
         });
 
-        return view;
+        return fragmento1;
     }
 }
 

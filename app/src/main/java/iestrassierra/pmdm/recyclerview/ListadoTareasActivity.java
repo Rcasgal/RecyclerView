@@ -10,6 +10,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -87,11 +91,25 @@ public class ListadoTareasActivity extends AppCompatActivity {
             case R.id.menuItemFavoritas:
 
             filtrarFavorita();
+                return true;
 
             case R.id.menuItemAnadirTareas:
 
                 Intent intent = new Intent(this, CrearTareaActivity.class);
-                startActivity(intent);
+                ActivityResultLauncher<Intent> lanzador = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                        new ActivityResultCallback<ActivityResult>() {
+                            @Override
+                            public void onActivityResult(ActivityResult result) {
+                                //TODO recibir Tarea de la actividad CrearTarea
+                                if(result.getResultCode() == RESULT_OK){
+                                    Intent intentDevuelto = result.getData();
+                                    Tarea tareaNueva = (Tarea) intentDevuelto.getExtras().get("TareaNueva");
+                                } else {
+                                    Toast.makeText(getApplicationContext(),"La tarea no ha podido ser creada", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                lanzador.launch(intent);
                 return true;
 
             default:
