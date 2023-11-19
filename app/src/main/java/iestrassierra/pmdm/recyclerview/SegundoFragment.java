@@ -33,21 +33,34 @@ public class SegundoFragment extends Fragment {
 
 
 
-    public interface OnSiguienteClickListener {
-        void onSiguienteClick(String titulo, String fechaCreacion, String fechaObjetivo, boolean prioritaria,int progreso,String descripcion);
+
+    public interface OnVolverClickListener {
+        void onVolverClick(String titulo, String fechaCreacion, String fechaObjetivo, boolean prioritaria,int progreso,String descripcion);
     }
 
-    private SegundoFragment.OnSiguienteClickListener listener;
-    public void setOnSiguienteClickListener(SegundoFragment.OnSiguienteClickListener listener) {
+    public interface OnGuardarClickListener {
+        void onGuardarClick();
+    }
+
+    private SegundoFragment.OnVolverClickListener listener;
+    private SegundoFragment.OnGuardarClickListener listenerGuardar;
+
+    public void setOnVolverClickListener(SegundoFragment.OnVolverClickListener listener) {
         this.listener = listener;
     }
+
+    public void setOnGuardarClickListener(SegundoFragment.OnGuardarClickListener listener) {
+        this.listenerGuardar = listener;
+    }
+
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         tareaViewModel = new ViewModelProvider(requireActivity()).get(TareaViewModel.class);
 
-        tareaViewModel.setDescripcion(String.valueOf(editTextDescripcion.getText()));
 
         tareaViewModel.getTitulo().observe(this, titulo -> {
 
@@ -76,10 +89,12 @@ public class SegundoFragment extends Fragment {
             spProgreso.setSelection(progreso);
 
         });
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_segundo, container, false);
 
         textViewTitulo = view.findViewById(R.id.textViewTitulo);
@@ -94,8 +109,11 @@ public class SegundoFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                tareaViewModel.setDescripcion(String.valueOf(editTextDescripcion.getText()));
 
-
+                if (listener != null) {
+                    listenerGuardar.onGuardarClick();
+                }
 
             }
         });
@@ -114,7 +132,7 @@ public class SegundoFragment extends Fragment {
 
 
                 if (listener != null) {
-                    listener.onSiguienteClick(titulo, fechaCreacion, fechaObjetivo, prioritaria,progreso,descripcion);
+                    listener.onVolverClick(titulo, fechaCreacion, fechaObjetivo, prioritaria,progreso,descripcion);
                 }
             }
         });

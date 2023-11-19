@@ -18,6 +18,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,7 +36,9 @@ public class ListadoTareasActivity extends AppCompatActivity {
 
     private boolean filtrarFav = false;
 
-    private androidx.appcompat.widget.Toolbar toolbar;
+    private ActivityResultLauncher<Intent> lanzador;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +54,10 @@ public class ListadoTareasActivity extends AppCompatActivity {
         Date fechaTarea1Date = fechaTarea1.getTime();
         Date fechaTarea2Date = fechaTarea2.getTime();
         listaTareas = new ArrayList<>();
-        listaTareas.add(new Tarea("Tarea 1", "Descripción de la Tarea 1", 50, new Date(), fechaTarea1Date, true));
-        listaTareas.add(new Tarea("Tarea 2", "Descripción de la Tarea 2", 1, new Date(), fechaTarea2Date, false));
+        DateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+
+        listaTareas.add(new Tarea("Tarea 1", "Descripción de la Tarea 1", 50, formato.format(new Date()), formato.format(fechaTarea1Date), true));
+        listaTareas.add(new Tarea("Tarea 2", "Descripción de la Tarea 2", 1, formato.format(new Date()), formato.format(fechaTarea2Date), false));
 
         recyclerViewTareas.setLayoutManager(new LinearLayoutManager(this));
         tareaAdapter = new TareaAdapter(listaTareas);
@@ -63,6 +70,30 @@ public class ListadoTareasActivity extends AppCompatActivity {
             recyclerViewTareas.setVisibility(View.VISIBLE);
             textViewNoTareas.setVisibility(View.GONE);
         }
+
+        lanzador = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == RESULT_OK) {
+                            Intent intentDevuelto = result.getData();
+                            Tarea tareaNueva = (Tarea) intentDevuelto.getExtras().get("TareaNueva");
+                            añadirTarea(tareaNueva);
+                            Toast.makeText(getApplicationContext(), "La tarea se ha creado", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Toast.makeText(getApplicationContext(), "La tarea no ha podido ser creada", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void añadirTarea(Tarea nuevaTarea){
+
+        listaTareas.add(nuevaTarea);
+        TareaAdapter ta = new TareaAdapter(listaTareas);
+        recyclerViewTareas.setAdapter(ta);
+
     }
 
     @Override
@@ -96,19 +127,6 @@ public class ListadoTareasActivity extends AppCompatActivity {
             case R.id.menuItemAnadirTareas:
 
                 Intent intent = new Intent(this, CrearTareaActivity.class);
-                ActivityResultLauncher<Intent> lanzador = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                        new ActivityResultCallback<ActivityResult>() {
-                            @Override
-                            public void onActivityResult(ActivityResult result) {
-                                //TODO recibir Tarea de la actividad CrearTarea
-                                if(result.getResultCode() == RESULT_OK){
-                                    Intent intentDevuelto = result.getData();
-                                    Tarea tareaNueva = (Tarea) intentDevuelto.getExtras().get("TareaNueva");
-                                } else {
-                                    Toast.makeText(getApplicationContext(),"La tarea no ha podido ser creada", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
                 lanzador.launch(intent);
                 return true;
 

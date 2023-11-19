@@ -56,5 +56,59 @@ public class TareaViewModel extends ViewModel {
     public void setDescripcion(String descripcionValue) {
         descripcion.setValue(descripcionValue);
     }
+
+    public String getTituloValue() {
+        return titulo.getValue();
+    }
+
+    public int getProgresoValue() {
+
+        if (progreso.getValue() != null){
+
+            return  progreso.getValue();
+
+        } else{
+
+            return 0;
+        }
+
+    }
+
+    public String getFechaCreacionValue() {
+
+
+        return fechaCreacion.getValue();
+    }
+
+    public String getFechaObjetivoValue() {
+
+
+        return fechaObjetivo.getValue();
+    }
+
+    public boolean getPrioritariaValue() {
+        if (prioritaria.getValue() != null){
+
+            return prioritaria.getValue();
+
+        } else {
+
+            return false;
+
+        }
+
+    }
+
+    public String getDescripcionValue() {
+
+        if(descripcion.getValue() != null){
+
+            return descripcion.getValue();
+        } else {
+
+            return "";
+
+        }
+    }
 }
 

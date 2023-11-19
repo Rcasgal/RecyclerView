@@ -1,13 +1,26 @@
 package iestrassierra.pmdm.recyclerview;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,7 +35,7 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
         holder.fechaTextView.setText(tarea.getFechaObjetivoString());
         holder.progresoProgressBar.setProgress(tarea.getProgreso());
         holder.tituloTextView.setText(tarea.getTitulo());
-        long diferenciaDias = calcularDiferenciaDias(tarea.getFechaObjetivo());
+        long diferenciaDias = calcularDiferenciaDias(tarea.getFechaObjetivoDate());
         String mensajeDias = "Quedan: " + diferenciaDias + " días";
         holder.diastextView.setText(mensajeDias);
 
@@ -30,11 +43,45 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
             holder.prioritariaImageView.setImageResource(R.drawable.prioritaria_icon);
             holder.prioritariaImageView.setVisibility(View.VISIBLE);
         } else {
-
-            holder.prioritariaImageView.setImageResource(R.drawable.descarga);
+            holder.prioritariaImageView.setImageResource(R.drawable.image);
             holder.prioritariaImageView.setVisibility(View.VISIBLE);
         }
+
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showContextMenu(v);
+                return true;
+            }
+        });
+
     }
+
+    private void showContextMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
+        popupMenu.inflate(R.menu.menu_contextual); // Inflar el menú desde XML
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                // Lógica para manejar las opciones del menú
+                switch (item.getItemId()) {
+                    case R.id.action_description:
+                        break;
+                    case R.id.action_edit:
+
+
+
+                        break;
+                    case R.id.action_delete:
+                        break;
+                }
+                return true;
+            }
+        });
+        popupMenu.show();
+    }
+
+
 
     private long calcularDiferenciaDias(Date fechaObjetivo) {
         Date fechaActual = new Date();

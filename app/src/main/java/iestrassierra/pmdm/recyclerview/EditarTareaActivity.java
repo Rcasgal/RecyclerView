@@ -1,26 +1,23 @@
 package iestrassierra.pmdm.recyclerview;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.DatePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.material.textfield.TextInputEditText;
-
-import java.util.Calendar;
-
-
-public class CrearTareaActivity extends AppCompatActivity implements PrimerFragment.OnSiguienteClickListener,SegundoFragment.OnVolverClickListener,SegundoFragment.OnGuardarClickListener{
+public class EditarTareaActivity extends AppCompatActivity implements PrimerFragment.OnSiguienteClickListener,SegundoFragment.OnVolverClickListener,SegundoFragment.OnGuardarClickListener{
 
     private FragmentManager fragmentManager;
     private TareaViewModel tareaViewModel;
+
+    public EditarTareaActivity(TareaViewModel tareaViewModel) {
+
+        this.tareaViewModel = tareaViewModel;
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +25,6 @@ public class CrearTareaActivity extends AppCompatActivity implements PrimerFragm
         setContentView(R.layout.activity_crear_tarea);
 
         fragmentManager = getSupportFragmentManager();
-        tareaViewModel = new ViewModelProvider(this).get(TareaViewModel.class);
         cargarPrimerFragment();
 
     }

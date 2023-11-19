@@ -1,19 +1,30 @@
 package iestrassierra.pmdm.recyclerview;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class Tarea {
+public class Tarea implements Parcelable {
+
+    private long id;
+    private long contador = 0;
     private String titulo;
     private String descripcion;
     private int progreso;
-    private Date fechaCreacion;
-    private Date fechaObjetivo;
+    private String fechaCreacion;
+    private String fechaObjetivo;
     private boolean prioritaria;
 
     public Tarea(){}
 
-    public Tarea(String titulo, String descripcion, int progreso, Date fechaCreacion, Date fechaObjetivo, boolean prioritaria) {
+    public Tarea(String titulo, String descripcion, int progreso, String fechaCreacion, String fechaObjetivo, boolean prioritaria) {
+        id = contador++;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.progreso = progreso;
@@ -21,6 +32,8 @@ public class Tarea {
         this.fechaObjetivo = fechaObjetivo;
         this.prioritaria = prioritaria;
     }
+
+
 
     public boolean esPrioritaria() {
         return prioritaria;
@@ -42,25 +55,38 @@ public class Tarea {
         this.progreso = progreso;
     }
 
-    public Date getFechaCreacion() {
+    public String getFechaCreacion() {
         return fechaCreacion;
     }
 
-    public void setFechaCreacion(Date fechaCreacion) {
+    public void setFechaCreacion(String fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
 
-    public Date getFechaObjetivo() {
+    public String getFechaObjetivo() {
         return fechaObjetivo;
     }
 
+    public Date getFechaObjetivoDate() {
+        Date fechaDate = null;
+        DateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+
+        try {
+            fechaDate = formatoFecha.parse(fechaObjetivo);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            // Manejo de la excepción si la cadena no puede ser parseada
+        }
+
+        return fechaDate;
+    }
     public String getFechaObjetivoString(){
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        return dateFormat.format(fechaObjetivo);
+
+        return fechaObjetivo;
     }
 
-    public void setFechaObjetivo(Date fechaObjetivo) {
+    public void setFechaObjetivo(String fechaObjetivo) {
         this.fechaObjetivo = fechaObjetivo;
     }
 
@@ -79,5 +105,42 @@ public class Tarea {
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+
+        parcel.writeLong(this.id);
+        parcel.writeString(this.titulo);
+        parcel.writeInt(this.progreso);
+        parcel.writeString(this.fechaCreacion);
+        parcel.writeString(this.fechaObjetivo);
+        parcel.writeByte((byte) (prioritaria ? 1 : 0));
+    }
+    public static final Creator<Tarea> CREATOR = new Creator<Tarea>() {
+        @Override
+        public Tarea createFromParcel(Parcel in) {
+            return new Tarea(in);
+        }
+
+        @Override
+        public Tarea[] newArray(int size) {
+            return new Tarea[size];
+        }
+    };
+    protected Tarea(Parcel in) {
+        id = in.readLong();
+        titulo = in.readString();
+        progreso = in.readInt();
+        fechaCreacion = in.readString();
+        fechaObjetivo = in.readString();
+        prioritaria = in.readByte() != 0;
+    }
+
 
 }

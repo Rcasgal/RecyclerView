@@ -24,7 +24,11 @@ public class PrimerFragment extends Fragment {
     private CheckBox checkBoxPrioritaria;
     private Button btnSiguiente;
 
+
     private TareaViewModel tareaViewModel;
+
+    private OnSiguienteClickListener listener;
+
 
     public PrimerFragment() {
     }
@@ -33,7 +37,6 @@ public class PrimerFragment extends Fragment {
         void onSiguienteClick(String titulo, String fechaCreacion, String fechaObjetivo, boolean prioritaria,int progreso);
     }
 
-    private OnSiguienteClickListener listener;
     public void setOnSiguienteClickListener(OnSiguienteClickListener listener) {
         this.listener = listener;
     }
@@ -41,7 +44,6 @@ public class PrimerFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Se resuelven las comunicaciones
 
         tareaViewModel = new ViewModelProvider(requireActivity()).get(TareaViewModel.class);
     }
@@ -57,12 +59,30 @@ public class PrimerFragment extends Fragment {
         spProgreso = fragmento1.findViewById(R.id.spinnerProgreso);
         btnSiguiente = fragmento1.findViewById(R.id.btnSiguiente);
 
-        editTextTitulo.setText(tareaViewModel.getTitulo().getValue());
-        editTextFechaCreacion.setText(tareaViewModel.getFechaCreacion().getValue());
-        editTextFechaObjetivo.setText(tareaViewModel.getFechaObjetivo().getValue());
-        checkBoxPrioritaria.setChecked(Boolean.TRUE.equals(tareaViewModel.getPrioritaria().getValue()));
-        spProgreso.setSelection(tareaViewModel.getProgreso().getValue());
 
+        String titulo = tareaViewModel.getTituloValue();
+        String fechaCreacion = tareaViewModel.getFechaCreacionValue();
+        String fechaObjetivo = tareaViewModel.getFechaObjetivoValue();
+        boolean esPrioritaria = tareaViewModel.getPrioritariaValue();
+        int progreso = tareaViewModel.getProgresoValue();
+
+        if (titulo != null) {
+            editTextTitulo.setText(titulo);
+        }
+
+        if (fechaCreacion != null) {
+            editTextFechaCreacion.setText(fechaCreacion);
+        }
+
+        if (fechaObjetivo != null) {
+            editTextFechaObjetivo.setText(fechaObjetivo);
+        }
+
+        checkBoxPrioritaria.setChecked(esPrioritaria);
+
+        if (progreso >= 0 && progreso <= 4) {
+            spProgreso.setSelection(progreso);
+        }
         btnSiguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
