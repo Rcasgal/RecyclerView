@@ -35,6 +35,8 @@ public class ListadoTareasActivity extends AppCompatActivity {
     private TareaAdapter tareaAdapter;
     private List<Tarea> listaTareas;
 
+    private ActivityResultLauncher<Intent> lanzador;
+
 
     private IComunicador comunicador = new IComunicador() {
         @Override
@@ -43,6 +45,21 @@ public class ListadoTareasActivity extends AppCompatActivity {
             Intent intentEditarTarea;
             intentEditarTarea = new Intent( getApplicationContext(),EditarTareaActivity.class);
             intentEditarTarea.putExtra("tareaEditar",tareaEditar);
+            lanzador = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                    new ActivityResultCallback<ActivityResult>() {
+                        @Override
+                        public void onActivityResult(ActivityResult result) {
+                            if (result.getResultCode() == RESULT_OK) {
+                                Intent intentDevuelto = result.getData();
+                                Tarea tareaNueva = (Tarea) intentDevuelto.getExtras().get("TareaNueva");
+                                añadirTarea(tareaNueva);
+                                Toast.makeText(getApplicationContext(), "La tarea se ha creado", Toast.LENGTH_SHORT).show();
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), "La tarea no ha podido ser creada", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
             lanzador.launch(intentEditarTarea);
 
 
@@ -55,21 +72,7 @@ public class ListadoTareasActivity extends AppCompatActivity {
     };
     private boolean filtrarFav = false;
 
-    private ActivityResultLauncher<Intent> lanzador = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                    new ActivityResultCallback<ActivityResult>() {
-        @Override
-        public void onActivityResult(ActivityResult result) {
-            if (result.getResultCode() == RESULT_OK) {
-                Intent intentDevuelto = result.getData();
-                Tarea tareaNueva = (Tarea) intentDevuelto.getExtras().get("TareaNueva");
-                añadirTarea(tareaNueva);
-                Toast.makeText(getApplicationContext(), "La tarea se ha creado", Toast.LENGTH_SHORT).show();
 
-            } else {
-                Toast.makeText(getApplicationContext(), "La tarea no ha podido ser creada", Toast.LENGTH_SHORT).show();
-            }
-        }
-    });
 
 
 
