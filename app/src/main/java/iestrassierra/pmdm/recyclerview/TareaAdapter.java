@@ -28,6 +28,9 @@ import java.util.List;
 public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHolder> {
     private List<Tarea> tareas;
 
+    private IComunicador comunicador;
+
+
 
     @Override
     public void onBindViewHolder(@NonNull TareaViewHolder holder, int position) {
@@ -47,29 +50,31 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
             holder.prioritariaImageView.setVisibility(View.VISIBLE);
         }
 
+
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                showContextMenu(v);
+                showContextMenu(v,holder.getAdapterPosition());
                 return true;
             }
         });
 
     }
 
-    private void showContextMenu(View view) {
+    private void showContextMenu(View view, int posicion) {
         PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
         popupMenu.inflate(R.menu.menu_contextual); // Inflar el menú desde XML
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                // Lógica para manejar las opciones del menú
                 switch (item.getItemId()) {
                     case R.id.action_description:
                         break;
                     case R.id.action_edit:
 
 
+
+                        comunicador.editarTarea(tareas.get(posicion));
 
                         break;
                     case R.id.action_delete:
@@ -90,8 +95,9 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
         return diferenciaDias;
     }
 
-    public TareaAdapter(List<Tarea> tareas) {
+    public TareaAdapter(List<Tarea> tareas,IComunicador comunicador) {
         this.tareas = tareas;
+        this.comunicador = comunicador;
     }
 
 

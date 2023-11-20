@@ -10,6 +10,9 @@ public class TareaViewModel extends ViewModel {
     private MutableLiveData<Integer> progreso = new MutableLiveData<>();
     private MutableLiveData<String> descripcion = new MutableLiveData<>();
 
+    private MutableLiveData<Long> id = new MutableLiveData<>();
+
+
     public MutableLiveData<String> getTitulo() {
         return titulo;
     }
@@ -25,6 +28,11 @@ public class TareaViewModel extends ViewModel {
     public void setProgreso(Integer progresovalue) {
         progreso.setValue(progresovalue);
     }
+
+    public void setId(Long idValue) {
+        id.setValue(idValue);
+    }
+
     public MutableLiveData<String> getFechaCreacion() {
         return fechaCreacion;
     }
@@ -74,6 +82,18 @@ public class TareaViewModel extends ViewModel {
 
     }
 
+    public long getIdValue() {
+
+        if (progreso.getValue() != null){
+
+            return  progreso.getValue();
+
+        } else{
+
+            return 0;
+        }
+
+    }
     public String getFechaCreacionValue() {
 
 
@@ -103,7 +123,8 @@ public class TareaViewModel extends ViewModel {
 
         if(descripcion.getValue() != null){
 
-            return descripcion.getValue();
+            return (String)descripcion.getValue();
+
         } else {
 
             return "";

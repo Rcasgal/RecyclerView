@@ -59,37 +59,6 @@ public class SegundoFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        tareaViewModel = new ViewModelProvider(requireActivity()).get(TareaViewModel.class);
-
-
-        tareaViewModel.getTitulo().observe(this, titulo -> {
-
-            textViewTitulo.setText(titulo);
-
-        });
-
-        tareaViewModel.getFechaCreacion().observe(this, fechaCreacion -> {
-
-            textViewFechaCreacion.setText(fechaCreacion);
-
-        });
-
-        tareaViewModel.getFechaObjetivo().observe(this, fechaObjetivo -> {
-
-            textViewFechaObjetivo.setText(fechaObjetivo);
-
-        });
-
-        tareaViewModel.getPrioritaria().observe(this, prioritaria -> {
-            checkBoxPrioritaria.setChecked(prioritaria);
-        });
-
-        tareaViewModel.getProgreso().observe(this, progreso -> {
-
-            spProgreso.setSelection(progreso);
-
-        });
-
     }
 
     @Override
@@ -137,7 +106,54 @@ public class SegundoFragment extends Fragment {
             }
         });
 
+        iniciarComponentes();
+
         return view;
+    }
+
+    private void iniciarComponentes(){
+
+
+        tareaViewModel = new ViewModelProvider(requireActivity()).get(TareaViewModel.class);
+
+        String descripcion = tareaViewModel.getDescripcionValue();
+
+
+        tareaViewModel.getTitulo().observe(getViewLifecycleOwner(), titulo -> {
+
+            textViewTitulo.setText(titulo);
+
+        });
+
+        tareaViewModel.getFechaCreacion().observe(getViewLifecycleOwner(), fechaCreacion -> {
+
+            textViewFechaCreacion.setText(fechaCreacion);
+
+        });
+
+        tareaViewModel.getFechaObjetivo().observe(getViewLifecycleOwner(), fechaObjetivo -> {
+
+            textViewFechaObjetivo.setText(fechaObjetivo);
+
+        });
+
+        tareaViewModel.getPrioritaria().observe(getViewLifecycleOwner(), prioritaria -> {
+            checkBoxPrioritaria.setChecked(prioritaria);
+        });
+
+        tareaViewModel.getProgreso().observe(getViewLifecycleOwner(), progreso -> {
+
+            spProgreso.setSelection(progreso);
+
+        });
+
+        if (!descripcion.isEmpty()){
+
+            editTextDescripcion.setText(descripcion);
+
+        }
+
+
     }
 
 }

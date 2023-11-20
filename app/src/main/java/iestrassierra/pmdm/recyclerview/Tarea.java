@@ -35,6 +35,7 @@ public class Tarea implements Parcelable {
 
 
 
+
     public boolean esPrioritaria() {
         return prioritaria;
     }
@@ -49,6 +50,14 @@ public class Tarea implements Parcelable {
 
     public int getProgreso() {
         return progreso;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public void setProgreso(int progreso) {
@@ -117,6 +126,7 @@ public class Tarea implements Parcelable {
 
         parcel.writeLong(this.id);
         parcel.writeString(this.titulo);
+        parcel.writeString(this.descripcion);
         parcel.writeInt(this.progreso);
         parcel.writeString(this.fechaCreacion);
         parcel.writeString(this.fechaObjetivo);
@@ -136,6 +146,7 @@ public class Tarea implements Parcelable {
     protected Tarea(Parcel in) {
         id = in.readLong();
         titulo = in.readString();
+        descripcion = in.readString();
         progreso = in.readInt();
         fechaCreacion = in.readString();
         fechaObjetivo = in.readString();

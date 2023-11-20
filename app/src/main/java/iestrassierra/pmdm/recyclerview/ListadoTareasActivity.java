@@ -1,4 +1,5 @@
 package iestrassierra.pmdm.recyclerview;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,9 +35,43 @@ public class ListadoTareasActivity extends AppCompatActivity {
     private TareaAdapter tareaAdapter;
     private List<Tarea> listaTareas;
 
+
+    private IComunicador comunicador = new IComunicador() {
+        @Override
+        public void editarTarea(Tarea tareaEditar) {
+
+            Intent intentEditarTarea;
+            //intentEditarTarea = new Intent(,EditarTareaActivity.class);
+           // intentEditarTarea.putExtra("tareaEditar",tareaEditar);
+            //Tarea tareaEditar2 = (Tarea) intentEditarTarea.getSerializableExtra("tareaEditar");
+           // System.out.println(tareaEditar2.getTitulo());
+           // lanzador.launch(intentEditarTarea);
+
+
+        }
+
+        @Override
+        public void eliminartarea() {
+
+        }
+    };
     private boolean filtrarFav = false;
 
-    private ActivityResultLauncher<Intent> lanzador;
+    private ActivityResultLauncher<Intent> lanzador = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                    new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if (result.getResultCode() == RESULT_OK) {
+                Intent intentDevuelto = result.getData();
+                Tarea tareaNueva = (Tarea) intentDevuelto.getExtras().get("TareaNueva");
+                añadirTarea(tareaNueva);
+                Toast.makeText(getApplicationContext(), "La tarea se ha creado", Toast.LENGTH_SHORT).show();
+
+            } else {
+                Toast.makeText(getApplicationContext(), "La tarea no ha podido ser creada", Toast.LENGTH_SHORT).show();
+            }
+        }
+    });
 
 
 
@@ -60,7 +95,7 @@ public class ListadoTareasActivity extends AppCompatActivity {
         listaTareas.add(new Tarea("Tarea 2", "Descripción de la Tarea 2", 1, formato.format(new Date()), formato.format(fechaTarea2Date), false));
 
         recyclerViewTareas.setLayoutManager(new LinearLayoutManager(this));
-        tareaAdapter = new TareaAdapter(listaTareas);
+        tareaAdapter = new TareaAdapter(listaTareas,comunicador);
         recyclerViewTareas.setAdapter(tareaAdapter);
 
         if (tareaAdapter.getItemCount() == 0) {
@@ -91,7 +126,7 @@ public class ListadoTareasActivity extends AppCompatActivity {
     private void añadirTarea(Tarea nuevaTarea){
 
         listaTareas.add(nuevaTarea);
-        TareaAdapter ta = new TareaAdapter(listaTareas);
+        TareaAdapter ta = new TareaAdapter(listaTareas,comunicador);
         recyclerViewTareas.setAdapter(ta);
 
     }
@@ -141,12 +176,12 @@ public class ListadoTareasActivity extends AppCompatActivity {
 
         if(filtrarFav) {
 
-            tareaAdapter = new TareaAdapter(favoritas(listaTareas));
+            tareaAdapter = new TareaAdapter(favoritas(listaTareas),comunicador);
 
 
         }else {
 
-            tareaAdapter = new TareaAdapter(listaTareas);
+            tareaAdapter = new TareaAdapter(listaTareas,comunicador);
 
         }
 

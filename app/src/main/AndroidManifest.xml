@@ -20,6 +20,10 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".EditarTareaActivity"
+                  android:exported="true">
+        </activity>
+
         <activity
             android:name=".ListadoTareasActivity"
             android:exported="true">

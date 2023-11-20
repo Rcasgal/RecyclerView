@@ -13,9 +13,15 @@ public class EditarTareaActivity extends AppCompatActivity implements PrimerFrag
     private FragmentManager fragmentManager;
     private TareaViewModel tareaViewModel;
 
+
+
     public EditarTareaActivity(TareaViewModel tareaViewModel) {
 
         this.tareaViewModel = tareaViewModel;
+
+    }
+
+    public EditarTareaActivity() {
 
     }
 
@@ -23,6 +29,16 @@ public class EditarTareaActivity extends AppCompatActivity implements PrimerFrag
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_tarea);
+
+        Tarea tareaEditar = (Tarea)getIntent().getSerializableExtra("tareaEditar");
+
+        tareaViewModel.setDescripcion(tareaEditar.getDescripcion());
+        tareaViewModel.setPrioritaria(tareaEditar.esPrioritaria());
+        tareaViewModel.setProgreso(tareaEditar.getProgreso());
+        tareaViewModel.setTitulo(tareaEditar.getTitulo());
+        tareaViewModel.setFechaCreacion(tareaEditar.getFechaCreacion());
+        tareaViewModel.setFechaObjetivo(tareaEditar.getFechaObjetivo());
+        tareaViewModel.setId(tareaEditar.getId());
 
         fragmentManager = getSupportFragmentManager();
         cargarPrimerFragment();
