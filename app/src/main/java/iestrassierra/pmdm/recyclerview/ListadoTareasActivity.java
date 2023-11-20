@@ -41,11 +41,9 @@ public class ListadoTareasActivity extends AppCompatActivity {
         public void editarTarea(Tarea tareaEditar) {
 
             Intent intentEditarTarea;
-            //intentEditarTarea = new Intent(,EditarTareaActivity.class);
-           // intentEditarTarea.putExtra("tareaEditar",tareaEditar);
-            //Tarea tareaEditar2 = (Tarea) intentEditarTarea.getSerializableExtra("tareaEditar");
-           // System.out.println(tareaEditar2.getTitulo());
-           // lanzador.launch(intentEditarTarea);
+            intentEditarTarea = new Intent( getApplicationContext(),EditarTareaActivity.class);
+            intentEditarTarea.putExtra("tareaEditar",tareaEditar);
+            lanzador.launch(intentEditarTarea);
 
 
         }
@@ -82,6 +80,7 @@ public class ListadoTareasActivity extends AppCompatActivity {
 
         recyclerViewTareas = findViewById(R.id.recyclerViewTareas);
         textViewNoTareas = findViewById(R.id.textViewNoTareas);
+
         Calendar fechaTarea1 = new GregorianCalendar(2024, Calendar.MAY, 3);
 
         Calendar fechaTarea2 = new GregorianCalendar(2024, Calendar.AUGUST, 25);

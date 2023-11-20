@@ -63,7 +63,7 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
 
     private void showContextMenu(View view, int posicion) {
         PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
-        popupMenu.inflate(R.menu.menu_contextual); // Inflar el menú desde XML
+        popupMenu.inflate(R.menu.menu_contextual);
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
