@@ -40,26 +40,10 @@ public class ListadoTareasActivity extends AppCompatActivity {
 
     private IComunicador comunicador = new IComunicador() {
         @Override
-        public void editarTarea(Tarea tareaEditar) {
+        public void editarTarea(Tarea tareaEditar){
 
-            Intent intentEditarTarea;
-            intentEditarTarea = new Intent( getApplicationContext(),EditarTareaActivity.class);
+            Intent intentEditarTarea = new Intent( getApplicationContext(),EditarTareaActivity.class);
             intentEditarTarea.putExtra("tareaEditar",tareaEditar);
-            lanzador = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                    new ActivityResultCallback<ActivityResult>() {
-                        @Override
-                        public void onActivityResult(ActivityResult result) {
-                            if (result.getResultCode() == RESULT_OK) {
-                                Intent intentDevuelto = result.getData();
-                                Tarea tareaNueva = (Tarea) intentDevuelto.getExtras().get("TareaNueva");
-                                añadirTarea(tareaNueva);
-                                Toast.makeText(getApplicationContext(), "La tarea se ha creado", Toast.LENGTH_SHORT).show();
-
-                            } else {
-                                Toast.makeText(getApplicationContext(), "La tarea no ha podido ser creada", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
             lanzador.launch(intentEditarTarea);
 
 
@@ -125,11 +109,27 @@ public class ListadoTareasActivity extends AppCompatActivity {
                 });
     }
 
-    private void añadirTarea(Tarea nuevaTarea){
+    private boolean añadirTarea(Tarea nuevaTarea){
+
+        for (Tarea tarea: listaTareas){
+
+            if (tarea.getId() == nuevaTarea.getId()){
+
+                listaTareas.remove(tarea);
+
+                listaTareas.add(nuevaTarea);
+
+                return true;
+
+            }
+
+        }
 
         listaTareas.add(nuevaTarea);
         TareaAdapter ta = new TareaAdapter(listaTareas,comunicador);
         recyclerViewTareas.setAdapter(ta);
+
+        return true;
 
     }
 

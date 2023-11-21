@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 public class EditarTareaActivity extends AppCompatActivity implements PrimerFragment.OnSiguienteClickListener,SegundoFragment.OnVolverClickListener,SegundoFragment.OnGuardarClickListener{
 
@@ -31,6 +32,8 @@ public class EditarTareaActivity extends AppCompatActivity implements PrimerFrag
         setContentView(R.layout.activity_crear_tarea);
 
         Tarea tareaEditar = (Tarea)getIntent().getParcelableExtra("tareaEditar");
+
+        tareaViewModel = new ViewModelProvider(this).get(TareaViewModel.class);
 
         tareaViewModel.setPrioritaria(tareaEditar.esPrioritaria());
         tareaViewModel.setProgreso(tareaEditar.getProgreso());

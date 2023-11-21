@@ -46,7 +46,7 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
             holder.prioritariaImageView.setImageResource(R.drawable.prioritaria_icon);
             holder.prioritariaImageView.setVisibility(View.VISIBLE);
         } else {
-            holder.prioritariaImageView.setImageResource(R.drawable.image);
+            holder.prioritariaImageView.setImageResource(R.drawable.prioritaria_icon);
             holder.prioritariaImageView.setVisibility(View.VISIBLE);
         }
 
