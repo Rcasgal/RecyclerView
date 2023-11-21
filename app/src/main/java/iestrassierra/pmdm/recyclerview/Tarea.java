@@ -13,7 +13,7 @@ import java.util.Locale;
 public class Tarea implements Parcelable {
 
     private long id;
-    private long contador = 0;
+    private static long contador = 0;
     private String titulo;
     private String descripcion;
     private int progreso;
@@ -24,17 +24,23 @@ public class Tarea implements Parcelable {
     public Tarea(){}
 
     public Tarea(String titulo, String descripcion, int progreso, String fechaCreacion, String fechaObjetivo, boolean prioritaria) {
-        id = contador++;
+
+        this.id = contador++;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.progreso = progreso;
         this.fechaCreacion = fechaCreacion;
         this.fechaObjetivo = fechaObjetivo;
         this.prioritaria = prioritaria;
+
     }
 
 
+    public void configurarContador(){
 
+        contador--;
+
+    }
 
     public boolean esPrioritaria() {
         return prioritaria;

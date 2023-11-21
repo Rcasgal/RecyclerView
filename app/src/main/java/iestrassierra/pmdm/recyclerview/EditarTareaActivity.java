@@ -31,7 +31,7 @@ public class EditarTareaActivity extends AppCompatActivity implements PrimerFrag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_tarea);
 
-        Tarea tareaEditar = (Tarea)getIntent().getParcelableExtra("tareaEditar");
+        Tarea tareaEditar = getIntent().getParcelableExtra("tareaEditar");
 
         tareaViewModel = new ViewModelProvider(this).get(TareaViewModel.class);
 
@@ -102,6 +102,8 @@ public class EditarTareaActivity extends AppCompatActivity implements PrimerFrag
         String descripcion = tareaViewModel.getDescripcionValue();
 
         Tarea nuevaTarea = new Tarea(titulo,descripcion,progreso,fechaCreacion,fechaObjetivo,prioritaria);
+        nuevaTarea.setId(tareaViewModel.getIdValue());
+        nuevaTarea.configurarContador();
 
         Intent resultIntent = new Intent();
         resultIntent.putExtra("TareaNueva", nuevaTarea);

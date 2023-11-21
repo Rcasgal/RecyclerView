@@ -111,17 +111,22 @@ public class ListadoTareasActivity extends AppCompatActivity {
 
     private boolean añadirTarea(Tarea nuevaTarea){
 
+        int posicion = 0;
+
         for (Tarea tarea: listaTareas){
 
             if (tarea.getId() == nuevaTarea.getId()){
 
-                listaTareas.remove(tarea);
+                listaTareas.set(posicion,nuevaTarea);
 
-                listaTareas.add(nuevaTarea);
+                TareaAdapter ta = new TareaAdapter(listaTareas,comunicador);
+                recyclerViewTareas.setAdapter(ta);
 
                 return true;
 
             }
+
+            posicion = posicion + 1;
 
         }
 
