@@ -36,7 +36,7 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
     public void onBindViewHolder(@NonNull TareaViewHolder holder, int position) {
         Tarea tarea = tareas.get(position);
         holder.fechaTextView.setText(tarea.getFechaObjetivoString());
-        holder.progresoProgressBar.setProgress(tarea.getProgreso());
+        holder.progresoProgressBar.setProgress(progresoBarra(tarea.getProgreso()));
         holder.tituloTextView.setText(tarea.getTitulo());
         long diferenciaDias = calcularDiferenciaDias(tarea.getFechaObjetivoDate());
         String mensajeDias = "Quedan: " + diferenciaDias + " días";
@@ -46,7 +46,7 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
             holder.prioritariaImageView.setImageResource(R.drawable.prioritaria_icon);
             holder.prioritariaImageView.setVisibility(View.VISIBLE);
         } else {
-            holder.prioritariaImageView.setImageResource(R.drawable.prioritaria_icon);
+            holder.prioritariaImageView.setImageResource(R.drawable.no_prioritaria_icon);
             holder.prioritariaImageView.setVisibility(View.VISIBLE);
         }
 
@@ -61,6 +61,23 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
 
     }
 
+    private int progresoBarra(int progreso) {
+        if (progreso == 0) {
+            return 0;
+        } else if (progreso == 1) {
+            return 25;
+        } else if (progreso == 2) {
+            return 50;
+        } else if (progreso == 3) {
+            return 75;
+        } else if (progreso == 4) {
+            return 100;
+        } else {
+            return 1;
+        }
+    }
+
+
     private void showContextMenu(View view, int posicion) {
         PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
         popupMenu.inflate(R.menu.menu_contextual);
@@ -69,15 +86,20 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.TareaViewHol
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_description:
+
+                        comunicador.mostrarDescripcion(tareas.get(posicion));
+
                         break;
                     case R.id.action_edit:
-
-
 
                         comunicador.editarTarea(tareas.get(posicion));
 
                         break;
                     case R.id.action_delete:
+
+
+                        comunicador.eliminartarea(tareas.get(posicion));
+
                         break;
                 }
                 return true;

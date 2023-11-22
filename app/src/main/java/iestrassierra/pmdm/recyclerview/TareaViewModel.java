@@ -84,9 +84,9 @@ public class TareaViewModel extends ViewModel {
 
     public long getIdValue() {
 
-        if (progreso.getValue() != null){
+        if (id.getValue() != null){
 
-            return  progreso.getValue();
+            return  id.getValue();
 
         } else{
 

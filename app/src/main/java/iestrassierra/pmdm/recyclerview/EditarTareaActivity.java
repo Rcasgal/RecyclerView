@@ -14,14 +14,6 @@ public class EditarTareaActivity extends AppCompatActivity implements PrimerFrag
     private FragmentManager fragmentManager;
     private TareaViewModel tareaViewModel;
 
-
-
-    public EditarTareaActivity(TareaViewModel tareaViewModel) {
-
-        this.tareaViewModel = tareaViewModel;
-
-    }
-
     public EditarTareaActivity() {
 
     }
@@ -100,9 +92,10 @@ public class EditarTareaActivity extends AppCompatActivity implements PrimerFrag
         boolean prioritaria = tareaViewModel.getPrioritariaValue();
         int progreso = tareaViewModel.getProgresoValue();
         String descripcion = tareaViewModel.getDescripcionValue();
+        long id = tareaViewModel.getIdValue();
 
         Tarea nuevaTarea = new Tarea(titulo,descripcion,progreso,fechaCreacion,fechaObjetivo,prioritaria);
-        nuevaTarea.setId(tareaViewModel.getIdValue());
+        nuevaTarea.setId(id);
         nuevaTarea.configurarContador();
 
         Intent resultIntent = new Intent();

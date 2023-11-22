@@ -10,6 +10,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -155,5 +156,40 @@ public class SegundoFragment extends Fragment {
 
 
     }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("titulo", textViewTitulo.getText().toString());
+        outState.putString("fechaCreacion", textViewFechaCreacion.getText().toString());
+        outState.putString("fechaObjetivo", textViewFechaObjetivo.getText().toString());
+        outState.putBoolean("esPrioritaria", checkBoxPrioritaria.isChecked());
+        outState.putInt("progreso", spProgreso.getSelectedItemPosition());
+        outState.putString("descripcion",editTextDescripcion.getText().toString());
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+        if(savedInstanceState != null){
+            String titulo = savedInstanceState.getString("titulo");
+            String fechaCreacion = savedInstanceState.getString("fechaCreacion");
+            String fechaObjetivo = savedInstanceState.getString("fechaObjetivo");
+            boolean esPrioritaria = savedInstanceState.getBoolean("esPrioritaria");
+            int progreso = savedInstanceState.getInt("progreso");
+            String descripcion = savedInstanceState.getString("descripcion");
+
+
+            tareaViewModel.setTitulo(titulo);
+            tareaViewModel.setFechaCreacion(fechaCreacion);
+            tareaViewModel.setFechaObjetivo(fechaObjetivo);
+            tareaViewModel.setPrioritaria(esPrioritaria);
+            tareaViewModel.setProgreso(progreso);
+            tareaViewModel.setDescripcion(descripcion);
+        }
+    }
+
+
 
 }

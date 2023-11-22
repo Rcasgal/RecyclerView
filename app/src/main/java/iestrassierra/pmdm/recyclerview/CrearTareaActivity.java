@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.DatePicker;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -14,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 
@@ -22,6 +24,10 @@ public class CrearTareaActivity extends AppCompatActivity implements PrimerFragm
     private FragmentManager fragmentManager;
     private TareaViewModel tareaViewModel;
 
+    private boolean comprobanteCargarSegundoFragent = false;
+
+    private boolean actividadRestaurada = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +35,16 @@ public class CrearTareaActivity extends AppCompatActivity implements PrimerFragm
 
         fragmentManager = getSupportFragmentManager();
         tareaViewModel = new ViewModelProvider(this).get(TareaViewModel.class);
-        cargarPrimerFragment();
+        if (actividadRestaurada && comprobanteCargarSegundoFragent){
+
+            actividadRestaurada = false;
+            cargarSegundoFragment();
+
+        } else {
+
+            cargarPrimerFragment();
+
+        }
 
     }
 
@@ -41,6 +56,15 @@ public class CrearTareaActivity extends AppCompatActivity implements PrimerFragm
         fragmentTransaction.commit();
     }
 
+    private void cargarSegundoFragment() {
+        SegundoFragment segundoFragment = new SegundoFragment();
+        segundoFragment.setOnVolverClickListener(this);
+        segundoFragment.setOnGuardarClickListener(this);
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayoutContainer, segundoFragment);
+        fragmentTransaction.commit();
+    }
+
     @Override
     public void onSiguienteClick(String titulo, String fechaCreacion, String fechaObjetivo, boolean prioritaria, int progreso) {
         tareaViewModel.setTitulo(titulo);
@@ -48,13 +72,10 @@ public class CrearTareaActivity extends AppCompatActivity implements PrimerFragm
         tareaViewModel.setFechaObjetivo(fechaObjetivo);
         tareaViewModel.setPrioritaria(prioritaria);
         tareaViewModel.setProgreso(progreso);
+        comprobanteCargarSegundoFragent = true;
 
-        SegundoFragment segundoFragment = new SegundoFragment();
-        segundoFragment.setOnVolverClickListener(this);
-        segundoFragment.setOnGuardarClickListener(this);
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayoutContainer, segundoFragment);
-        fragmentTransaction.commit();
+        cargarSegundoFragment();
+
     }
 
     @Override
@@ -66,6 +87,7 @@ public class CrearTareaActivity extends AppCompatActivity implements PrimerFragm
         tareaViewModel.setPrioritaria(prioritaria);
         tareaViewModel.setProgreso(progreso);
         tareaViewModel.setDescripcion(descripcion);
+        comprobanteCargarSegundoFragent = false;
 
         PrimerFragment primerFragment = new PrimerFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -96,4 +118,16 @@ public class CrearTareaActivity extends AppCompatActivity implements PrimerFragm
 
     }
 
-}
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        actividadRestaurada = true;
+    }
+    }
+
+
+
+
+
+
